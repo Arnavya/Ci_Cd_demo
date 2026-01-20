@@ -48,7 +48,7 @@ jobs:
       # SCA - Dependency Check
       # -----------------------
       - name: Dependency Check
-        uses: dependency-check/Dependency-Check_Action@v3
+        uses: dependency-check/Dependency-Check_Action@v2
         with:
           project: "devops-ci-cd"
           path: "."
@@ -76,12 +76,12 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.arnavya }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/devops-ci-cd:latest .
+          docker build -t ${{ secrets.arnavya }}/devops-ci-cd:latest .
 
       # -----------------------
       # Trivy Image Scan
@@ -89,7 +89,7 @@ jobs:
       - name: Scan Docker Image with Trivy
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devops-ci-cd:latest
+          image-ref: ${{ secrets.arnavya }}/devops-ci-cd:latest
           format: "table"
           exit-code: "1"
           severity: "CRITICAL,HIGH"
@@ -99,7 +99,7 @@ jobs:
       # -----------------------
       - name: Run Container Smoke Test
         run: |
-          docker run -d -p 8080:8080 --name test-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-ci-cd:latest
+          docker run -d -p 8080:8080 --name test-app ${{ secrets.arnavya }}/devops-ci-cd:latest
           sleep 15
           curl -f http://localhost:8080/actuator/health
           docker rm -f test-app
@@ -109,4 +109,4 @@ jobs:
       # -----------------------
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-ci-cd:latest
+          docker push ${{ secrets.arnavya }}/devops-ci-cd:latest
