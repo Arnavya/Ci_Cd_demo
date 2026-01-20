@@ -4,13 +4,20 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-    <module name="TreeWalker">
 
-        <!-- Enforce basic Java conventions -->
-        <module name="FileTabCharacter"/>
-        <module name="LineLength">
-            <property name="max" value="120"/>
-        </module>
+    <!-- ========================= -->
+    <!-- File-level checks -->
+    <!-- ========================= -->
+    <module name="FileTabCharacter"/>
+
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
+
+    <!-- ========================= -->
+    <!-- AST-level checks -->
+    <!-- ========================= -->
+    <module name="TreeWalker">
 
         <module name="AvoidStarImport"/>
         <module name="UnusedImports"/>
@@ -23,4 +30,5 @@
         <module name="EmptyBlock"/>
 
     </module>
+
 </module>
