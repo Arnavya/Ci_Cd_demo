@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-ci-cd
+  labels:
+    app: devops-ci-cd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-ci-cd
+  template:
+    metadata:
+      labels:
+        app: devops-ci-cd
+    spec:
+      containers:
+        - name: devops-ci-cd
+          image: DOCKERHUB_USERNAME/devops-ci-cd:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
